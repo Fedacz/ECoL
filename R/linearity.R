@@ -1,5 +1,5 @@
 #' Measures of linearity
-#'
+#' test
 #' Classification task. The linearity measures try to quantify if it is possible
 #' to separate the classes by a hyperplane. The underlying assumption is that a 
 #' linearly separable problem can be considered simpler than a problem requiring
