@@ -1,5 +1,5 @@
 #' Measures of linearity
-#' test
+#'
 #' Classification task. The linearity measures try to quantify if it is possible
 #' to separate the classes by a hyperplane. The underlying assumption is that a 
 #' linearly separable problem can be considered simpler than a problem requiring
@@ -99,7 +99,7 @@ linearity.class.formula <- function(formula, data, measures="all", ...) {
 }
 
 ls.linearity.class <- function() {
-  c("L1", "L2", "L3")
+  c("L1", "L2", "L3","L2B","L3B")
 }
 
 smo <- function(data) {
@@ -134,6 +134,18 @@ c.L2 <- function(model, data) {
   return(mean(aux))
 }
 
+c.L2B<-function(model, data) {
+    library(MLmetrics)
+    aux <- mapply(function(m, d) {
+        prd <- stats::predict(m, d)
+		
+		aux1<-Sensitivity(y_true=d$class, y_pred=prd,positive = "1")
+		aux2<-Specificity(y_true=d$class, y_pred=prd,positive = "1")
+		(aux1+aux2)/2
+    }, m=model, d=data)
+    
+    return(mean(aux))
+}
 c.L3 <- function(model, data) {
 
   aux <- mapply(function(m, d) {
@@ -142,6 +154,19 @@ c.L3 <- function(model, data) {
     error(prd, tmp$class)
   }, m=model, d=data)
 
+  return(mean(aux))
+}
+
+c.L3B <-function(model, data) {
+  library(MLmetrics)
+  aux <- mapply(function(m, d) {
+    tmp <- c.generate(d, nrow(d))
+    prd <- stats::predict(m, tmp)
+    aux1<-Sensitivity(y_true=d$class, y_pred=prd,positive = "1")
+    aux2<-Specificity(y_true=d$class, y_pred=prd,positive = "1")
+    ((aux1+aux2)/2)
+  }, m=model, d=data)
+  
   return(mean(aux))
 }
 
