@@ -120,7 +120,7 @@ neighborhood.formula <- function(formula, data, measures="all", ...) {
 }
 
 ls.neighborhood <- function() {
-  c("N1","N2", "N3", "N4", "T1", "LSC")
+  c("N1","N2", "N3", "N4", "T1", "LSC","N3B")
 }
 
 c.N1 <- function(dst, data) {
@@ -167,6 +167,15 @@ knn <- function(data, dst, k) {
 c.N3 <- function(dst, data) {
   aux <- knn(data, dst, 2) != data$class
   return(mean(aux))
+}
+
+c.N3B <- function(dst, data) {
+  library(MLmetrics)
+  aux <- knn(data, dst, 2)
+  aux1<-Sensitivity(y_true=data$class, y_pred=aux,positive = "1")
+  aux2<-Specificity(y_true=data$class, y_pred=aux,positive = "1")
+  aux3 <- (aux1+aux2)/2
+  return(1-mean(aux3))
 }
 
 c.N4 <- function(dst, data) {
