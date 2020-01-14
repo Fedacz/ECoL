@@ -171,7 +171,7 @@ c.N3 <- function(dst, data) {
 
 c.N3B <- function(dst, data) {
   library(MLmetrics)
-  aux <- knn(data, dst, 2)
+  aux <- knn(data, dst, 5)
   aux1<-Sensitivity(y_true=data$class, y_pred=aux,positive = "1")
   aux2<-Specificity(y_true=data$class, y_pred=aux,positive = "1")
   aux3 <- (aux1+aux2)/2
